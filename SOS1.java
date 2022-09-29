@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-//import java.lang.reflect.Array;
+//https://github.com/Jan4fx/sosgame`
 
 //left up diagonal S doesn't match on border
 
@@ -168,126 +168,186 @@ public class SOS1 extends Frame implements ActionListener {
         int addPoints = 0;
         if(buttons[i][j].getLabel() == "S"){
             //leftrow win
-            if(buttons[i-1][j].getLabel() == "O" && buttons[i-2][j].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i-2][j].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j].getLabel() == "O" && buttons[i-2][j].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i-2][j].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j, turn, bluePoints, redPoints, false);
+                    changeColor(i-2, j, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j, turn, bluePoints, redPoints, false);
-                changeColor(i-2, j, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //rightrow win
-            if(buttons[i+1][j].getLabel() == "O" && buttons[i+2][j].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK || buttons[i+2][j].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i+1][j].getLabel() == "O" && buttons[i+2][j].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK || buttons[i+2][j].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i+1, j, turn, bluePoints, redPoints, false);
+                    changeColor(i+2, j, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i+1, j, turn, bluePoints, redPoints, false);
-                changeColor(i+2, j, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //upcollumn win
-            if(buttons[i][j+1].getLabel() == "O" && buttons[i][j+2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j+2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i][j+1].getLabel() == "O" && buttons[i][j+2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j+2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(i, j+2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i, j+1, turn, bluePoints, redPoints, false);
-                changeColor(i, j+2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //downcollumn win
-            if(buttons[i][j-1].getLabel() == "O" && buttons[i][j-2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK || buttons[i][j-2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i][j-1].getLabel() == "O" && buttons[i][j-2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK || buttons[i][j-2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(i, j-2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i, j-1, turn, bluePoints, redPoints, false);
-                changeColor(i, j-2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //leftupdiagonal win
-            if(buttons[i-1][j+1].getLabel() == "O" && buttons[i-2][j+2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-2][j+2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j+1].getLabel() == "O" && buttons[i-2][j+2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-2][j+2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(i-2, j+2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
-                changeColor(i-2, j+2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //rightdowndiagonal win
-            if(buttons[i+1][j-1].getLabel() == "O" && buttons[i+2][j-2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j-1].getForeground() == Color.BLACK || buttons[i+2][j-2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i+1][j-1].getLabel() == "O" && buttons[i+2][j-2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j-1].getForeground() == Color.BLACK || buttons[i+2][j-2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(i+2, j-2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
-                changeColor(i+2, j-2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //leftdownndiagonal win
-            if(buttons[i-1][j-1].getLabel() == "O" && buttons[i-2][j-2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i-2][j-2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j-1].getLabel() == "O" && buttons[i-2][j-2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i-2][j-2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(i-2,j-2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
-                changeColor(i-2,j-2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //rightupdiagonal win
-            if(buttons[i+1][j+1].getLabel() == "O" && buttons[i+2][j+2].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK || buttons[i+2][j+2].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i+1][j+1].getLabel() == "O" && buttons[i+2][j+2].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK || buttons[i+2][j+2].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(i+2, j+2, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
-                changeColor(i+2, j+2, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
         }
         if(buttons[i][j].getLabel() == "O"){
             //row win
-            if(buttons[i-1][j].getLabel() == "S" && buttons[i+1][j].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j].getLabel() == "S" && buttons[i+1][j].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j, turn, bluePoints, redPoints, false);
+                    changeColor(i+1, j, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j, turn, bluePoints, redPoints, false);
-                changeColor(i+1, j, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //collum win
-            if(buttons[i][j+1].getLabel() == "S" && buttons[i][j-1].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i][j+1].getLabel() == "S" && buttons[i][j-1].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(i, j-1, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i, j+1, turn, bluePoints, redPoints, false);
-                changeColor(i, j-1, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //leftdiagonal win
-            if(buttons[i-1][j+1].getLabel() == "S" && buttons[i+1][j-1].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j+1].getLabel() == "S" && buttons[i+1][j-1].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
-                changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
             //rightdiagonal win
-            if(buttons[i-1][j-1].getLabel() == "S" && buttons[i+1][j+1].getLabel() == "S"){
-                if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK){
-                    addPoints++;
+            try{
+                if(buttons[i-1][j-1].getLabel() == "S" && buttons[i+1][j+1].getLabel() == "S"){
+                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK){
+                        addPoints++;
+                    }
+                    changeColor(i, j, turn, bluePoints, redPoints, true);
+                    changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
+                    sosMatch = true;
                 }
-                changeColor(i, j, turn, bluePoints, redPoints, true);
-                changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
-                changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
-                sosMatch = true;
+            }
+            catch(Exception E){
+                //skip
             }
         }
         return addPoints;
