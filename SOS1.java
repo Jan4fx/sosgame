@@ -216,6 +216,7 @@ public class SOS1 extends Frame implements ActionListener {
                 int i = 0;
                 int j = 0;
                 int[] coords = aiBoxDecider(i, j, turn);
+                buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
                 //i j = 0 issue
                 int addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
                 if(addPoints != 0) {
@@ -239,7 +240,7 @@ public class SOS1 extends Frame implements ActionListener {
             int i = 0;
             int j = 0;
             int[] coords = aiBoxDecider(i, j, turn);
-            //i j = 0 issue
+            buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
             int addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
             if(addPoints != 0) {
                 if(turn == 1){
@@ -250,7 +251,7 @@ public class SOS1 extends Frame implements ActionListener {
                 }
                 else{
                     bluePoints += addPoints;
-                    redScore.setText("Blue: " + bluePoints);
+                    blueScore.setText("Blue: " + bluePoints);
                 }
             } else {
                 // otherwise it's the other player's turn
@@ -382,6 +383,7 @@ public class SOS1 extends Frame implements ActionListener {
                 buttons[random1][random2].setLabel("S"); 
                 coords[0] = random1;
                 coords[1] = random2;
+
                 return coords;
             }
 
@@ -390,21 +392,21 @@ public class SOS1 extends Frame implements ActionListener {
 
     public static int randomGenerator(){
         Random rand = new Random(); //instance of random class
-        int upperbound = 10;
-          //generate random values from 0-10
+        int upperbound = 9;
+          //generate random values from 1-10
         int int_random = rand.nextInt(upperbound); 
-        return int_random;
+        return int_random + 1;
     }
 
-    public void changeColor(int i, int j, int turn, int bluePoints, int redPoints, Boolean addPoints){
+    public void changeColor(int coordsX, int coordsY, int turn, int bluePoints, int redPoints, Boolean addPoints){
         if(turn == 1){
-            buttons[i][j].setForeground(Color.RED);
+            buttons[coordsX][coordsY].setForeground(Color.RED);
             if(addPoints == true ){
                 redPoints++;
             }
         }
         else{
-            buttons[i][j].setForeground(Color.BLUE);
+            buttons[coordsX][coordsY].setForeground(Color.BLUE);
             if(addPoints == true){
                 bluePoints++;
             }
@@ -412,19 +414,19 @@ public class SOS1 extends Frame implements ActionListener {
     }
     
     // check for SOS at location (i, j)
-    public int checkForSOS(int i, int j, int turn, int bluePoints, int redPoints) {
-        System.out.print(buttons[i][j].getForeground());
+    public int checkForSOS(int coordsX, int coordsY, int turn, int bluePoints, int redPoints) {
+        //System.out.print(buttons[coordsX][coordsY].getForeground());
         int addPoints = 0;
-        if(buttons[i][j].getLabel() == "S"){
+        if(buttons[coordsX][coordsY].getLabel() == "S"){
             //leftrow win
             try{
-                if(buttons[i-1][j].getLabel() == "O" && buttons[i-2][j].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i-2][j].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY].getLabel() == "O" && buttons[coordsX-2][coordsY].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY].getForeground() == Color.BLACK || buttons[coordsX-2][coordsY].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j, turn, bluePoints, redPoints, false);
-                    changeColor(i-2, j, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX-2, coordsY, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -432,13 +434,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //rightrow win
             try{
-                if(buttons[i+1][j].getLabel() == "O" && buttons[i+2][j].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK || buttons[i+2][j].getForeground() == Color.BLACK){
+                if(buttons[coordsX+1][coordsY].getLabel() == "O" && buttons[coordsX+2][coordsY].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX+1][coordsY].getForeground() == Color.BLACK || buttons[coordsX+2][coordsY].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i+1, j, turn, bluePoints, redPoints, false);
-                    changeColor(i+2, j, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX+1, coordsY, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+2, coordsY, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -446,13 +448,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //upcollumn win
             try{
-                if(buttons[i][j+1].getLabel() == "O" && buttons[i][j+2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j+2].getForeground() == Color.BLACK){
+                if(buttons[coordsX][coordsY+1].getLabel() == "O" && buttons[coordsX][coordsY+2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX][coordsY+1].getForeground() == Color.BLACK || buttons[coordsX][coordsY+2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i, j+1, turn, bluePoints, redPoints, false);
-                    changeColor(i, j+2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX, coordsY+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY+2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -460,13 +462,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //downcollumn win
             try{
-                if(buttons[i][j-1].getLabel() == "O" && buttons[i][j-2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK || buttons[i][j-2].getForeground() == Color.BLACK){
+                if(buttons[coordsX][coordsY-1].getLabel() == "O" && buttons[coordsX][coordsY-2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX][coordsY-1].getForeground() == Color.BLACK || buttons[coordsX][coordsY-2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i, j-1, turn, bluePoints, redPoints, false);
-                    changeColor(i, j-2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX, coordsY-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY-2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -474,13 +476,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //leftupdiagonal win
             try{
-                if(buttons[i-1][j+1].getLabel() == "O" && buttons[i-2][j+2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-2][j+2].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY+1].getLabel() == "O" && buttons[coordsX-2][coordsY+2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY+1].getForeground() == Color.BLACK || buttons[coordsX-2][coordsY+2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
-                    changeColor(i-2, j+2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX-2, coordsY+2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -488,13 +490,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //rightdowndiagonal win
             try{
-                if(buttons[i+1][j-1].getLabel() == "O" && buttons[i+2][j-2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j-1].getForeground() == Color.BLACK || buttons[i+2][j-2].getForeground() == Color.BLACK){
+                if(buttons[coordsX+1][coordsY-1].getLabel() == "O" && buttons[coordsX+2][coordsY-2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX+1][coordsY-1].getForeground() == Color.BLACK || buttons[coordsX+2][coordsY-2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
-                    changeColor(i+2, j-2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX+1, coordsY-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+2, coordsY-2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -502,13 +504,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //leftdownndiagonal win
             try{
-                if(buttons[i-1][j-1].getLabel() == "O" && buttons[i-2][j-2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i-2][j-2].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY-1].getLabel() == "O" && buttons[coordsX-2][coordsY-2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY-1].getForeground() == Color.BLACK || buttons[coordsX-2][coordsY-2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
-                    changeColor(i-2,j-2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX-2,coordsY-2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -516,29 +518,29 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //rightupdiagonal win
             try{
-                if(buttons[i+1][j+1].getLabel() == "O" && buttons[i+2][j+2].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK || buttons[i+2][j+2].getForeground() == Color.BLACK){
+                if(buttons[coordsX+1][coordsY+1].getLabel() == "O" && buttons[coordsX+2][coordsY+2].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX+1][coordsY+1].getForeground() == Color.BLACK || buttons[coordsX+2][coordsY+2].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
-                    changeColor(i+2, j+2, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX+1, coordsY+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+2, coordsY+2, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
                 //skip
             }
         }
-        if(buttons[i][j].getLabel() == "O"){
+        if(buttons[coordsX][coordsY].getLabel() == "O"){
             //row win
             try{
-                if(buttons[i-1][j].getLabel() == "S" && buttons[i+1][j].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j].getForeground() == Color.BLACK || buttons[i+1][j].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY].getLabel() == "S" && buttons[coordsX+1][coordsY].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY].getForeground() == Color.BLACK || buttons[coordsX+1][coordsY].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j, turn, bluePoints, redPoints, false);
-                    changeColor(i+1, j, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+1, coordsY, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -546,13 +548,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //collum win
             try{
-                if(buttons[i][j+1].getLabel() == "S" && buttons[i][j-1].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i][j+1].getForeground() == Color.BLACK || buttons[i][j-1].getForeground() == Color.BLACK){
+                if(buttons[coordsX][coordsY+1].getLabel() == "S" && buttons[coordsX][coordsY-1].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX][coordsY+1].getForeground() == Color.BLACK || buttons[coordsX][coordsY-1].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i, j+1, turn, bluePoints, redPoints, false);
-                    changeColor(i, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX, coordsY+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY-1, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -560,13 +562,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //leftdiagonal win
             try{
-                if(buttons[i-1][j+1].getLabel() == "S" && buttons[i+1][j-1].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK || buttons[i-1][j+1].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY+1].getLabel() == "S" && buttons[coordsX+1][coordsY-1].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY+1].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY+1].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j+1, turn, bluePoints, redPoints, false);
-                    changeColor(i+1, j-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+1, coordsY-1, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
@@ -574,13 +576,13 @@ public class SOS1 extends Frame implements ActionListener {
             }
             //rightdiagonal win
             try{
-                if(buttons[i-1][j-1].getLabel() == "S" && buttons[i+1][j+1].getLabel() == "S"){
-                    if(buttons[i][j].getForeground() == Color.BLACK || buttons[i-1][j-1].getForeground() == Color.BLACK || buttons[i+1][j+1].getForeground() == Color.BLACK){
+                if(buttons[coordsX-1][coordsY-1].getLabel() == "S" && buttons[coordsX+1][coordsY+1].getLabel() == "S"){
+                    if(buttons[coordsX][coordsY].getForeground() == Color.BLACK || buttons[coordsX-1][coordsY-1].getForeground() == Color.BLACK || buttons[coordsX+1][coordsY+1].getForeground() == Color.BLACK){
                         addPoints++;
                     }
-                    changeColor(i, j, turn, bluePoints, redPoints, true);
-                    changeColor(i-1, j-1, turn, bluePoints, redPoints, false);
-                    changeColor(i+1, j+1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX, coordsY, turn, bluePoints, redPoints, true);
+                    changeColor(coordsX-1, coordsY-1, turn, bluePoints, redPoints, false);
+                    changeColor(coordsX+1, coordsY+1, turn, bluePoints, redPoints, false);
                 }
             }
             catch(Exception E){
