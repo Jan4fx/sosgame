@@ -1,13 +1,7 @@
 # sosgame
 SOS game for class
 
-BUGS:
-AIVsPlayer and AIVsAI the player has to click for the AI to play each turn
-
 THINGS TO ADD:
 Unit Testing
-1 AI Player 
-2 AI Players
-Simple Game (1 match wins)
-User decides size of grid
+Record Button
 Lines through matches
