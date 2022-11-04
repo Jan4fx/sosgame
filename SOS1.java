@@ -36,6 +36,8 @@ public class SOS1 extends Frame implements ActionListener {
     private Button generalMode;
     private Button simpleMode;
     private Boolean gameOver = false;
+    public int maxTurns;
+    public int turnCount;
     //0 is general 1 is simple
     private int gameMode = -1;
     //-1 no pick 0 twoPlayers 1 onePlayer 2 noPlayers
@@ -133,19 +135,8 @@ public class SOS1 extends Frame implements ActionListener {
         if(e.getSource() == btnNewGame) {
             newGame();
         }
-        else if((redPoints > 0 || bluePoints > 0) && (gameMode == 1)){
-            gameOver = true;
-            if(redPoints > bluePoints){
-                gameStatus.setText("RED WON");
-            }
-            else if(bluePoints > redPoints){
-                gameStatus.setText("BLUE WON");
-            }
-            else{
-                gameStatus.setText("Game ends in a TIE");
-            }
-        }
         else if(e.getSource() == boardSizeEnter){
+            /* 
             String s1 = boardSize.getText(); 
             System.out.print(s1);
             gridSize = Integer.parseInt(s1);
@@ -161,12 +152,10 @@ public class SOS1 extends Frame implements ActionListener {
             boardSize.setText("");
             boardSizeEnter.setVisible(false);
             gameStatus.setText("Game is LIVE");
-        }
-        else if(e.getSource() == S) {
-            playerInput = "S";
-        }
-        else if(e.getSource() == O) {
-            playerInput = "O";
+            */
+            showBoard();
+            maxTurns = gridSize * gridSize;
+            turnCount = 0;
         }
         else if(e.getSource() == twoPlayers) {
             playerMode = 0;
@@ -204,7 +193,26 @@ public class SOS1 extends Frame implements ActionListener {
         }
         else if(e.getSource() == btnExit) {
             System.exit(0);
-        } else if(playerMode == 0 && gameMode != -1 && gameOver == false){
+        } 
+        else if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
+            gameOver = true;
+            if(redPoints > bluePoints){
+                gameStatus.setText("RED WON");
+            }
+            else if(bluePoints > redPoints){
+                gameStatus.setText("BLUE WON");
+            }
+            else{
+                gameStatus.setText("Game ends in a TIE");
+            }
+        }
+        else if(e.getSource() == S) {
+            playerInput = "S";
+        }
+        else if(e.getSource() == O) {
+            playerInput = "O";
+        }
+        else if(playerMode == 0 && gameMode != -1 && gameOver == false){
             for(int i = 0; i < 10; i++) {
                 for(int j = 0; j < 10; j++) {
                     if(e.getSource() == buttons[i][j] && buttons[i][j].getLabel() == "") {
@@ -218,6 +226,7 @@ public class SOS1 extends Frame implements ActionListener {
                             buttons[i][j].setForeground(Color.BLACK);
                             //values[i][j] = -1;
                         }
+                        turnCount += 1;
                         // check for SOS
                         int addPoints = checkForSOS(i, j, turn, bluePoints, redPoints);
                         if(addPoints != 0) {
@@ -265,6 +274,7 @@ public class SOS1 extends Frame implements ActionListener {
                             }
                             // check for SOS
                             int addPoints = checkForSOS(i, j, turn, bluePoints, redPoints);
+                            turnCount += 1;
                             if(addPoints != 0){
                                 bluePoints += addPoints;
                                 blueScore.setText("Blue:" + bluePoints);
@@ -294,6 +304,7 @@ public class SOS1 extends Frame implements ActionListener {
                         turn = -turn;
                     }
                 }
+                turnCount += 1;
             if(turn == 1){
                 currentTurn.setText("TURN: AI");
             }
@@ -328,10 +339,28 @@ public class SOS1 extends Frame implements ActionListener {
             else{
                 currentTurn.setText("TURN: AI2"); 
             }
+            turnCount += 1;
         }
 
     }
 
+    public void showBoard(){
+        String s1 = boardSize.getText(); 
+        System.out.print(s1);
+        gridSize = Integer.parseInt(s1);
+        System.out.print(gridSize);
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
+                buttons[i][j].setVisible(true);
+                //System.out.print(buttons[i][j].getForeground());
+                //System.out.print(buttons[i][j].getActionCommand());
+            }
+        }
+        boardSize.setVisible(false);
+        boardSize.setText("");
+        boardSizeEnter.setVisible(false);
+        gameStatus.setText("Game is LIVE");
+    }
     
     
     public static String whichLetter(int x, int y){
