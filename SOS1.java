@@ -6,54 +6,63 @@ import java.util.Random;
 //getting multiple values out of a function https://www.techiedelight.com/return-multiple-values-method-java/
 
 
-//left up diagonal S doesn't match on border
+//turnCount doesn't work for AI VS PLAYER and AI VS AI
+//figure out if you can reformat autamitcally all of the buttons when some are hidden and some are shown
 
 
 public class SOS1 extends Frame implements ActionListener {
     
-    private Label lblTitle;
-    private Label redScore;
-    private Label gameStatus;
-    private Label currentTurn;
+    public static Label lblTitle;
+    public static Label redScore;
+    public static Label gameStatus;
+    public static Label currentTurn;
     public int gridSize;
     public static int redPoints = 0;
     private Label blueScore;
+    public static Button recordReplay;
+    public static Boolean recording = false;
     public static int bluePoints = 0;
     private Panel pnlMain;
     private static Button[][] buttons;
     //Frame f = new Frame("TextField Example");    
     TextField boardSize; 
-    private Button btnNewGame;
-    private Button btnExit;
-    private int turn;
-    private Button S;
-    private Button O;   
-    private Button twoPlayers;
-    private Button onePlayer;
-    private Button noPlayers;
-    private Button boardSizeEnter;
-    private int playerMode = -1;
-    private Button generalMode;
-    private Button simpleMode;
-    private Boolean gameOver = false;
-    public int maxTurns;
-    public int turnCount;
+    public static Button btnNewGame;
+    public static Button btnExit;
+    public static int turn;
+    public static Button S;
+    public static Button O;   
+    public static Button twoPlayers;
+    public static Button onePlayer;
+    public static Button noPlayers;
+    public static Button boardSizeEnter;
+    //0 two players 1 one player 2 ai vs ai
+    public static int playerMode = -1;
+    public static Button generalMode;
+    public static Button simpleMode;
+    public static Boolean gameOver = false;
+    public static int maxTurns;
+    public static int turnCount;
     //0 is general 1 is simple
-    private int gameMode = -1;
+    public static int gameMode = -1;
     //-1 no pick 0 twoPlayers 1 onePlayer 2 noPlayers
-    private String playerInput = "S";
+    public static String playerInput = "S";
     
     public SOS1() {
         super("SOS");
         setLayout(new BorderLayout());
         lblTitle = new Label("SOS", Label.CENTER);
         lblTitle.setFont(new Font("Serif", Font.BOLD, 24));
-        currentTurn = new Label("TURN: RED", Label.LEFT);
+        currentTurn = new Label("Go Red", Label.LEFT);
         currentTurn.setFont(new Font("Serif", Font.BOLD, 24));
         redScore = new Label("Red:" + redPoints, Label.CENTER);
         redScore.setFont(new Font("Serif", Font.BOLD, 24));
         blueScore = new Label("Blue:" + bluePoints, Label.LEFT);
         blueScore.setFont(new Font("Serif", Font.BOLD, 24));
+        recordReplay = new Button("Record Game");
+        recordReplay.setVisible(true);
+        //recordReplay.setFont(new Font("Serif", Font.BOLD, 24));
+
+
         add(lblTitle, BorderLayout.NORTH);
         add(redScore, BorderLayout.EAST);
         add(blueScore, BorderLayout.WEST);
@@ -95,10 +104,12 @@ public class SOS1 extends Frame implements ActionListener {
         boardSize.setBounds(50, 50, 200, 20);  
         gameStatus = new Label("Select Game Mode" , Label.LEFT);
         gameStatus.setFont(new Font("Serif", Font.BOLD, 24));
+        pnlBottom.add(recordReplay); 
         pnlBottom.add(gameStatus); 
         pnlBottom.add(btnNewGame);
         pnlBottom.add(S);
         pnlBottom.add(O);
+        //pnlBottom.add(recordReplay);
         pnlMiddle.add(generalMode);
         pnlMiddle.add(simpleMode);
         pnlMiddle.add(twoPlayers);
@@ -116,6 +127,8 @@ public class SOS1 extends Frame implements ActionListener {
         noPlayers.addActionListener(this);
         boardSizeEnter.addActionListener(this);
         boardSizeEnter.setVisible(true);
+        recordReplay.setVisible(true);
+        recordReplay.addActionListener(this);
         btnExit = new Button("Exit");
         pnlBottom.add(btnExit);
         btnExit.addActionListener(this);
@@ -125,6 +138,7 @@ public class SOS1 extends Frame implements ActionListener {
         turn = 1; // 1 for blue, -1 for red
         setSize(1000, 1000);
         setVisible(true);
+        currentTurn.setVisible(false);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -134,6 +148,14 @@ public class SOS1 extends Frame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnNewGame) {
             newGame();
+            
+        }
+        else if(e.getSource() == recordReplay){
+            if(recording == false){
+                recording = true;
+                recordReplay.setLabel("Recording");
+            }
+
         }
         else if(e.getSource() == boardSizeEnter){
             /* 
@@ -156,6 +178,15 @@ public class SOS1 extends Frame implements ActionListener {
             showBoard();
             maxTurns = gridSize * gridSize;
             turnCount = 0;
+            if(gameMode == 0){
+                currentTurn.setText("Go Red");
+            }
+            else if(gameMode == 1){
+                currentTurn.setText("Go P1");
+            }
+            else if(gameMode == 2){
+                currentTurn.setText("Go AI1");
+            }
         }
         else if(e.getSource() == twoPlayers) {
             playerMode = 0;
@@ -164,6 +195,8 @@ public class SOS1 extends Frame implements ActionListener {
             noPlayers.setVisible(false);
             //pnlMiddle.remove( twoPlayers );
             gameStatus.setText("Input Grid Size");
+            currentTurn.setVisible(true);
+            currentTurn.setText("Then Click Boad Size");
         }
         else if(e.getSource() == onePlayer) {
             playerMode = 1;
@@ -171,15 +204,19 @@ public class SOS1 extends Frame implements ActionListener {
             //onePlayer.setVisible(false);
             noPlayers.setVisible(false);
             //pnlMiddle.remove( onePlayer );
+            currentTurn.setVisible(true);
             gameStatus.setText("Input Grid Size");
+            currentTurn.setText("Then Click Boad Size");
         }
         else if(e.getSource() == noPlayers) {
             playerMode = 2;
             twoPlayers.setVisible(false);
             onePlayer.setVisible(false);
+            currentTurn.setVisible(true);
             //noPlayers.setVisible(false);
             //pnlMiddle.remove( noPlayers );
             gameStatus.setText("Input Grid Size");
+            currentTurn.setText("Then Click Boad Size");
         }
         else if(e.getSource() == generalMode){
             gameMode = 0;
@@ -194,18 +231,29 @@ public class SOS1 extends Frame implements ActionListener {
         else if(e.getSource() == btnExit) {
             System.exit(0);
         } 
+        else if(checkForGameOver(redPoints, bluePoints, gameMode, turnCount, maxTurns, recording) == true){
+            gameOver = true;
+        }
+        /* 
         else if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
             gameOver = true;
+            if(recording == true){
+                recordReplay.setLabel("Play Replay");
+            }
             if(redPoints > bluePoints){
                 gameStatus.setText("RED WON");
+                currentTurn.setText("Press New Game");
             }
             else if(bluePoints > redPoints){
                 gameStatus.setText("BLUE WON");
+                currentTurn.setText("Press New Game");
             }
             else{
-                gameStatus.setText("Game ends in a TIE");
+                gameStatus.setText("TIE GAME");
+                currentTurn.setText("Press New Game");
             }
         }
+         */
         else if(e.getSource() == S) {
             playerInput = "S";
         }
@@ -217,6 +265,9 @@ public class SOS1 extends Frame implements ActionListener {
                 for(int j = 0; j < 10; j++) {
                     if(e.getSource() == buttons[i][j] && buttons[i][j].getLabel() == "") {
                         // place an S or an O in the grid for the current player's turn
+                        if(recording == false){
+                            recordReplay.setVisible(false);
+                        }
                         if(playerInput == "S") {
                             buttons[i][j].setLabel("S");
                             buttons[i][j].setForeground(Color.BLACK);
@@ -248,10 +299,10 @@ public class SOS1 extends Frame implements ActionListener {
                             }
                         }
                         if(turn == 1){
-                            currentTurn.setText("TURN: RED");
+                            currentTurn.setText("Go Red");
                         }
                         else{
-                            currentTurn.setText("TURN: BLUE"); 
+                            currentTurn.setText("Go Blue"); 
                         
                     }
                 }
@@ -306,10 +357,10 @@ public class SOS1 extends Frame implements ActionListener {
                 }
                 turnCount += 1;
             if(turn == 1){
-                currentTurn.setText("TURN: AI");
+                currentTurn.setText("Go AI");
             }
             else{
-                currentTurn.setText("TURN: P1"); 
+                currentTurn.setText("Go P1"); 
             }
         }
         else if(playerMode == 2 && gameMode != -1 && gameOver == false){
@@ -334,14 +385,42 @@ public class SOS1 extends Frame implements ActionListener {
                     turn = -turn;
                 }
             if(turn == 1){
-                currentTurn.setText("TURN: AI1");
+                currentTurn.setText("Go AI1");
             }
             else{
-                currentTurn.setText("TURN: AI2"); 
+                currentTurn.setText("Go AI2"); 
             }
             turnCount += 1;
         }
 
+    }
+    //int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording
+    public static boolean checkForGameOver(int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording){
+        if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
+            //gameOver = true;
+            if(redPoints > bluePoints){
+                gameStatus.setText("RED WON");
+                
+            }
+            else if(bluePoints > redPoints){
+                gameStatus.setText("BLUE WON");
+                
+            }
+            else{
+                gameStatus.setText("TIE GAME");
+                
+            }
+            if(recording == true){
+                recordReplay.setLabel("Play Replay");
+            }
+            else{
+                currentTurn.setText("Press New Game");
+            }
+            return true;
+        }
+        else{
+            return false; 
+        }
     }
 
     public void showBoard(){
@@ -508,7 +587,8 @@ public class SOS1 extends Frame implements ActionListener {
     }
     public void newGame(){
         // reset game
-        gameStatus.setText("Game is LIVE");
+        gameStatus.setText("Input Grid Size");
+        currentTurn.setVisible(false);
         twoPlayers.setVisible(true);
         onePlayer.setVisible(true);
         noPlayers.setVisible(true);
@@ -516,10 +596,14 @@ public class SOS1 extends Frame implements ActionListener {
         boardSizeEnter.setVisible(true);
         generalMode.setVisible(true);
         simpleMode.setVisible(true);
+        recordReplay.setVisible(true);
         redPoints = 0;
         bluePoints = 0;
+        recording = false;
+        recordReplay.setLabel("Record Game");
         redScore.setText("Red:" + redPoints);
         blueScore.setText("Blue:" + bluePoints);
+        //0 two players 1 one player 2 ai vs ai
         playerMode = -1;
         gameMode = -1;
         gameOver = false;
