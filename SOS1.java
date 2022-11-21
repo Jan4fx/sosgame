@@ -5,8 +5,6 @@ import java.util.Random;
 //https://github.com/Jan4fx/sosgame
 //getting multiple values out of a function https://www.techiedelight.com/return-multiple-values-method-java/
 
-
-//turnCount doesn't work for AI VS PLAYER and AI VS AI
 //figure out if you can reformat autamitcally all of the buttons when some are hidden and some are shown
 
 
