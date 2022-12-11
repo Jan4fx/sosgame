@@ -1,12 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Random;
 //random documentation https://www.educative.io/answers/how-to-generate-random-numbers-in-java
 //https://github.com/Jan4fx/sosgame
 //getting multiple values out of a function https://www.techiedelight.com/return-multiple-values-method-java/
+import java.io.*;
 
 //figure out if you can reformat autamitcally all of the buttons when some are hidden and some are shown
-
 
 public class SOS1 extends Frame implements ActionListener {
     
@@ -19,6 +20,11 @@ public class SOS1 extends Frame implements ActionListener {
     private Label blueScore;
     public static Button recordReplay;
     public static Boolean recording = false;
+    //recordingStage
+    //0 no recording
+    //1 recording
+    //2 play recording 
+    public static int recordingStage = 0;
     public static int bluePoints = 0;
     private Panel pnlMain;
     private static Button[][] buttons;
@@ -48,6 +54,12 @@ public class SOS1 extends Frame implements ActionListener {
     public static String playerInput = "S";
     int i;
     int j;
+    //String[] recordList = {"Hello", "World"};
+    //String[] recordList;
+   ArrayList<String> recordList = new ArrayList<String>();
+   //the AI workflow does not know if it inputed S or O so there will need to be a boolean for
+   //the record function to process it
+   public static String AIPickedLetter;
     
     public SOS1() {
         super("SOS");
@@ -145,6 +157,13 @@ public class SOS1 extends Frame implements ActionListener {
         setSize(1000, 1000);
         setVisible(true);
         currentTurn.setVisible(false);
+
+        //File notebook = new File("~/Notes/hello_world.txt");
+        //FileWriter writer = new FileWriter(notebook);
+        //writer.write("Hello World!");
+        //writer.close();
+
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -159,9 +178,13 @@ public class SOS1 extends Frame implements ActionListener {
         else if(e.getSource() == recordReplay){
             if(recording == false){
                 recording = true;
+                recordingStage = 1;
                 recordReplay.setLabel("Recording");
             }
-
+            if(recordingStage == 2){
+                //playReplay();
+                writeToFile(recordList);
+            }
         }
         else if(e.getSource() == boardSizeEnter){
             /* 
@@ -195,6 +218,7 @@ public class SOS1 extends Frame implements ActionListener {
             }
         }
         else if(e.getSource() == twoPlayers) {
+            recordList.add("Two Players Game Mode");
             playerMode = 0;
             //twoPlayers.setVisible(false);
             onePlayer.setVisible(false);
@@ -205,6 +229,7 @@ public class SOS1 extends Frame implements ActionListener {
             currentTurn.setText("Then Click Boad Size");
         }
         else if(e.getSource() == onePlayer) {
+            recordList.add("One Player Game Mode");
             playerMode = 1;
             redbluePlayer.setVisible(true);
             twoPlayers.setVisible(false);
@@ -219,16 +244,19 @@ public class SOS1 extends Frame implements ActionListener {
             if(playerIsRed == true){
                 playerIsRed = false;
                 redbluePlayer.setLabel("Player is Blue");
+                recordList.add("Player is Blue");
 
             }
             else{
                 playerIsRed = true;
                 redbluePlayer.setLabel("Player is Red");
+                recordList.add("Player is Red");
             }
 
         }
         else if(e.getSource() == noPlayers) {
             playerMode = 2;
+            recordList.add("No Players");
             twoPlayers.setVisible(false);
             onePlayer.setVisible(false);
             currentTurn.setVisible(true);
@@ -238,11 +266,13 @@ public class SOS1 extends Frame implements ActionListener {
             currentTurn.setText("Then Click Boad Size");
         }
         else if(e.getSource() == generalMode){
+            recordList.add("General Game Mode");
             gameMode = 0;
             simpleMode.setVisible(false);
             gameStatus.setText("Select # of Players");
         }
         else if(e.getSource() == simpleMode){
+            recordList.add("Simple Game Mode");
             gameMode = 1;
             generalMode.setVisible(false);
             gameStatus.setText("Select # Of Players");
@@ -250,8 +280,23 @@ public class SOS1 extends Frame implements ActionListener {
         else if(e.getSource() == btnExit) {
             System.exit(0);
         } 
-        else if(checkForActualGameOver(redPoints, bluePoints, gameMode, turnCount, maxTurns, recording) == true){
+        else if(checkForActualGameOver(redPoints, bluePoints, gameMode, turnCount, maxTurns, recording, recordingStage) == true){
             gameOver = true;
+            if(redPoints > bluePoints){
+                gameStatus.setText("RED WON");
+                recordList.add("RED WON");
+                
+            }
+            else if(bluePoints > redPoints){
+                gameStatus.setText("BLUE WON");
+                recordList.add("BLUE WON");
+                
+            }
+            else{
+                gameStatus.setText("TIE GAME");
+                recordList.add("TIE GAME");
+                
+            }
         }
         /* 
         else if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
@@ -275,9 +320,11 @@ public class SOS1 extends Frame implements ActionListener {
          */
         else if(e.getSource() == S) {
             playerInput = "S";
+            //recordList.add("Player Input S");
         }
         else if(e.getSource() == O) {
             playerInput = "O";
+            //recordList.add("Player Input O");
         }
         else if(playerMode == 0 && gameMode != -1 && gameOver == false){
             for(int i = 0; i < 10; i++) {
@@ -290,11 +337,25 @@ public class SOS1 extends Frame implements ActionListener {
                         if(playerInput == "S") {
                             buttons[i][j].setLabel("S");
                             buttons[i][j].setForeground(Color.BLACK);
+                            
+
+                            if(turn == 1){
+                                recordList.add("Red inputed S into " + "collumn " + i + " row " + j);
+                            }
+                            else{
+                                recordList.add("Blue inputed S into " + "collumn " + i + " row " + j);
+                            }
                             turnCount += 1;
                             //values[i][j] = 1;
                         } else {
                             buttons[i][j].setLabel("O");
                             buttons[i][j].setForeground(Color.BLACK);
+                            if(turn == 1){
+                                recordList.add("Red inputed O into " + "collumn " + i + " row " + j);
+                            }
+                            else{
+                                recordList.add("Blue inputed O into " + "collumn " + i + " row " + j);
+                            }
                             turnCount += 1;
                             //values[i][j] = -1;
                         }
@@ -303,11 +364,13 @@ public class SOS1 extends Frame implements ActionListener {
                         int addPoints = checkForSOS(i, j, turn, bluePoints, redPoints);
                         if(addPoints != 0) {
                             if(turn == 1){
+                                recordList.add("Red player now has " + redPoints + " points");
                                 redPoints += addPoints;
                                 redScore.setText("Red:" + redPoints);
                                 blueScore.setText("Blue:" + bluePoints);
                             }
                             else{
+                                recordList.add("Blue player now has " + bluePoints + " points");
                                 bluePoints += addPoints;
                                 blueScore.setText("Blue:" + bluePoints);
                                 redScore.setText("Red:" + redPoints);
@@ -321,9 +384,11 @@ public class SOS1 extends Frame implements ActionListener {
                         }
                         if(turn == 1){
                             currentTurn.setText("Go Red");
+                            //recordList.add("Red Turn");
                         }
                         else{
                             currentTurn.setText("Go Blue"); 
+                            //recordList.add("Blue Turn");
                         
                     }
                 }
@@ -331,6 +396,7 @@ public class SOS1 extends Frame implements ActionListener {
         }
         else if(playerMode == 1 && gameMode != -1 && gameOver == false){
             if(turn == -1){
+                //recordList.add("Player Turn");
                 for(int i = 0; i < gridSize; i++) {
                     for(int j = 0; j < gridSize; j++) {
                         if(e.getSource() == buttons[i][j] && buttons[i][j].getLabel() == "") {
@@ -340,8 +406,10 @@ public class SOS1 extends Frame implements ActionListener {
                                 buttons[i][j].setForeground(Color.BLACK);
                                 //values[i][j] = 1;
                                 turnCount += 1;
+                                recordList.add("Player inputed S into " + "collumn " + i + " row " + j);
                             } else {
                                 buttons[i][j].setLabel("O");
+                                recordList.add("Player inputed O into " + "collumn " + i + " row " + j);
                                 buttons[i][j].setForeground(Color.BLACK);
                                 turnCount += 1;
                                 //values[i][j] = -1;
@@ -353,19 +421,23 @@ public class SOS1 extends Frame implements ActionListener {
                                 if(playerIsRed == true){
                                     redPoints += addPoints;
                                     redScore.setText("Red:" + redPoints);
+                                    recordList.add("Red now has " + redPoints + " Points");
                                 }
                                 else{
                                     bluePoints += addPoints;
                                     blueScore.setText("Blue:" + bluePoints);
+                                    recordList.add("Blue now has " + bluePoints + " Points");
                                 }
                             }
                             else{
                                 turn = -turn;
+                                recordList.add("AI Turn");
                                 //AI TURN
                                 i = 0;
                                 j = 0;
                                 int[] coords = aiBoxDecider(i, j, turn, gridSize);
                                 System.out.print("\nAI PLACED here" + buttons[coords[0]] + " "  + buttons[coords[1]]);
+                                recordList.add("AI inputed O into " + "collumn " + coords[0] + " row " + coords[1]);
                                 buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
                                 //i j = 0 issue
                                 addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
@@ -374,10 +446,12 @@ public class SOS1 extends Frame implements ActionListener {
                                     if(playerIsRed == false){
                                         redPoints += addPoints;
                                         redScore.setText("Red:" + redPoints);
+                                        recordList.add("AI now has " + redPoints + "points");
                                     }
                                     else{
                                         bluePoints += addPoints;
                                         blueScore.setText("Blue:" + bluePoints);
+                                        recordList.add("AI now has " + bluePoints + "points");
                                     }
                                 // if SOS then give current player an extra turn
                                 //turn = turn;
@@ -397,6 +471,7 @@ public class SOS1 extends Frame implements ActionListener {
                 j = 0;
                 int[] coords = aiBoxDecider(i, j, turn, gridSize);
                 //System.out.print("\nAI PLACED here" + buttons[coords[0]] + " "  + buttons[coords[1]]);
+                recordList.add("AI inputed O into " + "collumn " + coords[0] + " row " + coords[1]);
                 buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
                 //i j = 0 issue
                 int addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
@@ -405,10 +480,12 @@ public class SOS1 extends Frame implements ActionListener {
                     if(playerIsRed == false){
                         redPoints += addPoints;
                         redScore.setText("Red:" + redPoints);
+                        recordList.add("AI now has " + redPoints + "points");
                     }
                     else{
                         bluePoints += addPoints;
                         blueScore.setText("Blue:" + bluePoints);
+                        recordList.add("AI now has " + bluePoints + "points");
                     }
                     // if SOS then give current player an extra turn
                     //turn = turn;
@@ -425,16 +502,31 @@ public class SOS1 extends Frame implements ActionListener {
             int[] coords = aiBoxDecider(i, j, turn, gridSize);
             buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
             int addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
+            if(buttons[coords[0]][coords[1]].getLabel() == "S"){
+                AIPickedLetter = "S";
+            }
+            else{
+                AIPickedLetter = "O";
+            }
+            recordList.add("AI1 inputed O into " + "collumn " + coords[0] + " row " + coords[1]);
+            if(turn == 1){
+                recordList.add("AI1 inputed " + AIPickedLetter +  " into " + "collumn " + coords[0] + " row " + coords[1]);
+            }
+            else{
+                recordList.add("AI2 inputed " + AIPickedLetter +  " into " + "collumn " + coords[0] + " row " + coords[1]);
+            }
             if(addPoints != 0) {
                 if(turn == 1){
                     redPoints += addPoints;
                     redScore.setText("Red:" + redPoints);
+                    recordList.add("AI1 now has " + redPoints + " points");
                     // if SOS then give current player an extra turn
                     //turn = turn;
                 }
                 else{
                     bluePoints += addPoints;
                     blueScore.setText("Blue:" + bluePoints);
+                    recordList.add("AI2 now has " + bluePoints + " points");
                 }
             } else {
                 // otherwise it's the other player's turn
@@ -451,7 +543,7 @@ public class SOS1 extends Frame implements ActionListener {
 
     }
         //int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording
-        public static boolean checkForActualGameOver(int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording){
+        public static boolean checkForActualGameOver(int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording, int recordingStages){
             //buttons[i][j].getLabel() == ""
             int filledBoxCount = 0;
             for(int i = 0; i < 10; i++) {
@@ -479,6 +571,7 @@ public class SOS1 extends Frame implements ActionListener {
                 }
                 if(recording == true){
                     recordReplay.setLabel("Play Replay");
+                    recordingStage = 2;
                 }
                 else{
                     currentTurn.setText("Press New Game");
@@ -502,6 +595,7 @@ public class SOS1 extends Frame implements ActionListener {
                 }
                 if(recording == true){
                     recordReplay.setLabel("Play Replay");
+                    recordingStage = 2;
                 }
                 else{
                     currentTurn.setText("Press New Game");
@@ -532,6 +626,7 @@ public class SOS1 extends Frame implements ActionListener {
             }
             if(recording == true){
                 recordReplay.setLabel("Play Replay");
+                recordingStage = 2;
             }
             else{
                 currentTurn.setText("Press New Game");
@@ -542,6 +637,29 @@ public class SOS1 extends Frame implements ActionListener {
             return false; 
         }
     }
+
+    public void playReplay(){
+        //playReplay
+    }
+
+    //public static void writeToFile(String[] args){
+    public static void writeToFile(ArrayList<String> recordList){
+        //"C:\\Users\\username\\example\\output.txt"
+        try {
+            ///Users/joshuanewton/Desktop/SOSPROJECT
+            //BufferedWriter writer = new BufferedWriter(new FileWriter("Users/myUser/Desktop/SOSPROJECT/sosreplay.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("sosreplay.txt"));
+            for (String records : recordList){
+                writer.write("\n" + records);
+            }
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void showBoard(){
         String s1 = boardSize.getText(); 
@@ -739,6 +857,8 @@ public class SOS1 extends Frame implements ActionListener {
     }
     public void newGame(){
         // reset game
+        //recordList = new String[0];
+        recordList.clear();
         gameStatus.setText("Input Grid Size");
         currentTurn.setVisible(false);
         twoPlayers.setVisible(true);
@@ -755,6 +875,7 @@ public class SOS1 extends Frame implements ActionListener {
         redPoints = 0;
         bluePoints = 0;
         recording = false;
+        recordingStage = 0;
         recordReplay.setLabel("Record Game");
         redScore.setText("Red:" + redPoints);
         blueScore.setText("Blue:" + bluePoints);
@@ -952,7 +1073,6 @@ public class SOS1 extends Frame implements ActionListener {
         }
         return addPoints;
     }
-    
     public static void main(String[] args) {
         SOS1 game = new SOS1();
     }
