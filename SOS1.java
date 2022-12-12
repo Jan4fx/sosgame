@@ -27,8 +27,7 @@ public class SOS1 extends Frame implements ActionListener {
     public static int recordingStage = 0;
     public static int bluePoints = 0;
     private Panel pnlMain;
-    private static Button[][] buttons;
-    //Frame f = new Frame("TextField Example");    
+    private static Button[][] buttons;   
     TextField boardSize; 
     public static Button btnNewGame;
     public static Button btnExit;
@@ -54,8 +53,6 @@ public class SOS1 extends Frame implements ActionListener {
     public static String playerInput = "S";
     int i;
     int j;
-    //String[] recordList = {"Hello", "World"};
-    //String[] recordList;
    ArrayList<String> recordList = new ArrayList<String>();
    //the AI workflow does not know if it inputed S or O so there will need to be a boolean for
    //the record function to process it
@@ -74,13 +71,9 @@ public class SOS1 extends Frame implements ActionListener {
         blueScore.setFont(new Font("Serif", Font.BOLD, 24));
         recordReplay = new Button("Record Game");
         recordReplay.setVisible(true);
-        //recordReplay.setFont(new Font("Serif", Font.BOLD, 24));
-
-
         add(lblTitle, BorderLayout.NORTH);
         add(redScore, BorderLayout.EAST);
         add(blueScore, BorderLayout.WEST);
-        //add(currentTurn, BorderLayout.NORTH);
         pnlMain = new Panel();
         pnlMain.setLayout(new GridLayout(10, 10));
         buttons = new Button[10][10];
@@ -98,7 +91,6 @@ public class SOS1 extends Frame implements ActionListener {
         Panel pnlBottom = new Panel();
         Panel pnlMiddle = new Panel();
         pnlBottom.setLayout(new FlowLayout());
-        //pnlMiddle.setLayout(new FlowLayout());
         pnlMiddle.setSize(1000,1000);   
         btnNewGame = new Button("New Game");
         S = new Button("S");
@@ -114,9 +106,6 @@ public class SOS1 extends Frame implements ActionListener {
         boardSize = new TextField(); 
         boardSize.setVisible(true);
         boardSize.setBounds(200,200,200,200);  
-        //String s1 = boardSize.getText(); 
-        //int a = Integer.parseInt(s1);
-        //System.out.print(a);
         boardSize.setBounds(50, 50, 200, 20);  
         gameStatus = new Label("Select Game Mode" , Label.LEFT);
         gameStatus.setFont(new Font("Serif", Font.BOLD, 24));
@@ -125,7 +114,6 @@ public class SOS1 extends Frame implements ActionListener {
         pnlBottom.add(btnNewGame);
         pnlBottom.add(S);
         pnlBottom.add(O);
-        //pnlBottom.add(recordReplay);
         pnlMiddle.add(generalMode);
         pnlMiddle.add(simpleMode);
         pnlMiddle.add(twoPlayers);
@@ -157,13 +145,6 @@ public class SOS1 extends Frame implements ActionListener {
         setSize(1000, 1000);
         setVisible(true);
         currentTurn.setVisible(false);
-
-        //File notebook = new File("~/Notes/hello_world.txt");
-        //FileWriter writer = new FileWriter(notebook);
-        //writer.write("Hello World!");
-        //writer.close();
-
-
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -187,23 +168,6 @@ public class SOS1 extends Frame implements ActionListener {
             }
         }
         else if(e.getSource() == boardSizeEnter){
-            /* 
-            String s1 = boardSize.getText(); 
-            System.out.print(s1);
-            gridSize = Integer.parseInt(s1);
-            System.out.print(gridSize);
-            for(int i = 0; i < gridSize; i++) {
-                for(int j = 0; j < gridSize; j++) {
-                    buttons[i][j].setVisible(true);
-                    //System.out.print(buttons[i][j].getForeground());
-                    //System.out.print(buttons[i][j].getActionCommand());
-                }
-            }
-            boardSize.setVisible(false);
-            boardSize.setText("");
-            boardSizeEnter.setVisible(false);
-            gameStatus.setText("Game is LIVE");
-            */
             showBoard();
             maxTurns = gridSize * gridSize;
             turnCount = 0;
@@ -260,8 +224,6 @@ public class SOS1 extends Frame implements ActionListener {
             twoPlayers.setVisible(false);
             onePlayer.setVisible(false);
             currentTurn.setVisible(true);
-            //noPlayers.setVisible(false);
-            //pnlMiddle.remove( noPlayers );
             gameStatus.setText("Input Grid Size");
             currentTurn.setText("Then Click Boad Size");
         }
@@ -298,33 +260,11 @@ public class SOS1 extends Frame implements ActionListener {
                 
             }
         }
-        /* 
-        else if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
-            gameOver = true;
-            if(recording == true){
-                recordReplay.setLabel("Play Replay");
-            }
-            if(redPoints > bluePoints){
-                gameStatus.setText("RED WON");
-                currentTurn.setText("Press New Game");
-            }
-            else if(bluePoints > redPoints){
-                gameStatus.setText("BLUE WON");
-                currentTurn.setText("Press New Game");
-            }
-            else{
-                gameStatus.setText("TIE GAME");
-                currentTurn.setText("Press New Game");
-            }
-        }
-         */
         else if(e.getSource() == S) {
             playerInput = "S";
-            //recordList.add("Player Input S");
         }
         else if(e.getSource() == O) {
             playerInput = "O";
-            //recordList.add("Player Input O");
         }
         else if(playerMode == 0 && gameMode != -1 && gameOver == false){
             for(int i = 0; i < 10; i++) {
@@ -346,7 +286,6 @@ public class SOS1 extends Frame implements ActionListener {
                                 recordList.add("Blue inputed S into " + "collumn " + i + " row " + j);
                             }
                             turnCount += 1;
-                            //values[i][j] = 1;
                         } else {
                             buttons[i][j].setLabel("O");
                             buttons[i][j].setForeground(Color.BLACK);
@@ -357,10 +296,7 @@ public class SOS1 extends Frame implements ActionListener {
                                 recordList.add("Blue inputed O into " + "collumn " + i + " row " + j);
                             }
                             turnCount += 1;
-                            //values[i][j] = -1;
                         }
-                        
-                        // check for SOS
                         int addPoints = checkForSOS(i, j, turn, bluePoints, redPoints);
                         if(addPoints != 0) {
                             if(turn == 1){
@@ -384,11 +320,9 @@ public class SOS1 extends Frame implements ActionListener {
                         }
                         if(turn == 1){
                             currentTurn.setText("Go Red");
-                            //recordList.add("Red Turn");
                         }
                         else{
                             currentTurn.setText("Go Blue"); 
-                            //recordList.add("Blue Turn");
                         
                     }
                 }
@@ -396,7 +330,6 @@ public class SOS1 extends Frame implements ActionListener {
         }
         else if(playerMode == 1 && gameMode != -1 && gameOver == false){
             if(turn == -1){
-                //recordList.add("Player Turn");
                 for(int i = 0; i < gridSize; i++) {
                     for(int j = 0; j < gridSize; j++) {
                         if(e.getSource() == buttons[i][j] && buttons[i][j].getLabel() == "") {
@@ -404,7 +337,6 @@ public class SOS1 extends Frame implements ActionListener {
                             if(playerInput == "S") {
                                 buttons[i][j].setLabel("S");
                                 buttons[i][j].setForeground(Color.BLACK);
-                                //values[i][j] = 1;
                                 turnCount += 1;
                                 recordList.add("Player inputed S into " + "collumn " + i + " row " + j);
                             } else {
@@ -412,7 +344,6 @@ public class SOS1 extends Frame implements ActionListener {
                                 recordList.add("Player inputed O into " + "collumn " + i + " row " + j);
                                 buttons[i][j].setForeground(Color.BLACK);
                                 turnCount += 1;
-                                //values[i][j] = -1;
                             }
                             // check for SOS
                             int addPoints = checkForSOS(i, j, turn, bluePoints, redPoints);
@@ -441,6 +372,7 @@ public class SOS1 extends Frame implements ActionListener {
                                 buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
                                 //i j = 0 issue
                                 addPoints = checkForSOS(coords[0], coords[1], turn, bluePoints, redPoints);
+                                //keep track of how many turns left
                                 turnCount += 1;
                                 if(addPoints != 0) {
                                     if(playerIsRed == false){
@@ -470,6 +402,7 @@ public class SOS1 extends Frame implements ActionListener {
                 i = 0;
                 j = 0;
                 int[] coords = aiBoxDecider(i, j, turn, gridSize);
+                //commented out for when debugging needed
                 //System.out.print("\nAI PLACED here" + buttons[coords[0]] + " "  + buttons[coords[1]]);
                 recordList.add("AI inputed O into " + "collumn " + coords[0] + " row " + coords[1]);
                 buttons[coords[0]][coords[1]].setForeground(Color.BLACK);
@@ -542,9 +475,7 @@ public class SOS1 extends Frame implements ActionListener {
         }
 
     }
-        //int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording
         public static boolean checkForActualGameOver(int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording, int recordingStages){
-            //buttons[i][j].getLabel() == ""
             int filledBoxCount = 0;
             for(int i = 0; i < 10; i++) {
                 for(int j = 0; j < 10; j++) {
@@ -607,7 +538,6 @@ public class SOS1 extends Frame implements ActionListener {
             }
         }
 
-    //int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording
     public static boolean checkForGameOver(int redPoints, int bluePoints, int gameMode, int turnCount, int maxTurns, boolean recording){
         //buttons[i][j].getLabel() == ""
         if((redPoints > 0 || bluePoints > 0) && (gameMode == 1) || (turnCount >= maxTurns)){
@@ -638,11 +568,6 @@ public class SOS1 extends Frame implements ActionListener {
         }
     }
 
-    public void playReplay(){
-        //playReplay
-    }
-
-    //public static void writeToFile(String[] args){
     public static void writeToFile(ArrayList<String> recordList){
         //"C:\\Users\\username\\example\\output.txt"
         try {
@@ -654,7 +579,6 @@ public class SOS1 extends Frame implements ActionListener {
             }
             writer.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -662,6 +586,7 @@ public class SOS1 extends Frame implements ActionListener {
 
 
     public void showBoard(){
+        //display the parts of the board that are requested 
         String s1 = boardSize.getText(); 
         System.out.print(s1);
         gridSize = Integer.parseInt(s1);
@@ -669,8 +594,6 @@ public class SOS1 extends Frame implements ActionListener {
         for(int i = 0; i < gridSize; i++) {
             for(int j = 0; j < gridSize; j++) {
                 buttons[i][j].setVisible(true);
-                //System.out.print(buttons[i][j].getForeground());
-                //System.out.print(buttons[i][j].getActionCommand());
             }
         }
         boardSize.setVisible(false);
@@ -857,7 +780,6 @@ public class SOS1 extends Frame implements ActionListener {
     }
     public void newGame(){
         // reset game
-        //recordList = new String[0];
         recordList.clear();
         gameStatus.setText("Input Grid Size");
         currentTurn.setVisible(false);
