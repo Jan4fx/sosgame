@@ -1,4 +1,4 @@
-#How To Run The Program
+# How To Run The Program
 1. Go into terminal, cd into sosgame directory
 2. Run the command: javac SOS1.java
 Afterwards the app will either start automatically or you will have to go into your file explorer enter the sosgame directory and click on SOS1.class coffee icon
